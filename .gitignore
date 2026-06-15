@@ -1,0 +1,12 @@
+# Ephemeral working docs — graduate or die; never published
+wip/
+
+# Local Claude Code config (per-machine; this repo ships its skills via the plugin, not project config)
+.claude/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
