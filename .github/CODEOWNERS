@@ -1,0 +1,9 @@
+# Code owners for agent-memory-trellis.
+# Listed owners are auto-requested for review on any PR that touches matching paths.
+# Combined with a branch ruleset that requires Code Owner review, a maintainer
+# approval becomes mandatory before merge to the default branch.
+#
+# Docs: https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Everything is owned by the maintainer(s) until finer-grained ownership is needed.
+*       @s-frantz

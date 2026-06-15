@@ -1,0 +1,9 @@
+# Ephemeral working docs — graduate or die; never published
+wip/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
