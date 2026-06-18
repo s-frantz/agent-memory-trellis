@@ -87,6 +87,8 @@ For each authoritative doc, check its claims against the actual codebase. This i
 - This skill owns the decision-log gate: the live log must hold only **in-force** decisions the code actually reflects.
 - An `accepted` record with no corresponding code is a **phantom** — a planned-but-unbuilt decision that reads as current state and misleads the next agent. Verify against code; if the work landed, this is just stale status to fix; if it never landed, flag for retirement (or demote to a `docs/wip/` plan).
 - A record marked `proposed` that the code now reflects should be **promoted** to `accepted`.
+- A `proposed` record without matching code is expected (an in-flight decision), not a phantom — leave it. Only `accepted` records are held to the code.
+- When reading the log as current state, count legacy entries with no `status` as `accepted`.
 - A significant decision visible in the code but absent from the log is a coverage gap — suggest a record.
 
 ---

@@ -82,6 +82,8 @@ Decisions get two tiers; pick per decision rather than committing the whole repo
 
 Either way, a decision that's agreed but not yet built is a *plan*, and plans live in `docs/wip/` — not the decision log. `doc-audit` enforces this (promotes on landing, flags phantoms). The `status` field then earns its keep for the rest of the lifecycle: `accepted → superseded`/`deprecated`.
 
+**Reading the log.** Treat only `accepted` records as in-force architecture; `proposed`, `superseded`, and `deprecated` are not constraints on unrelated work — a `proposed` record is planning context only for the change that introduced it. A legacy entry with no `status` counts as `accepted`, so existing logs need no restamping. Keeping proposed records out of the live folder by default (location separation) is the safer of the two flows precisely because it doesn't depend on every reader remembering this rule: progressive disclosure means a new agent should be able to trust everything it finds in `docs/decisions/` as current, without first filtering by status.
+
 **Public/private.** When the repo runs a split, the public index lists only public decisions and carries one *plain-text* line noting a private decision log exists — never a markdown link into the private tier (it 404s in a stranger's clone). The private tier (`docs/private/decisions/`) keeps its own index. State this split wherever decision practice is described; `doc-audit` polices the boundary.
 
 ### Ephemeral docs: `docs/wip/`
