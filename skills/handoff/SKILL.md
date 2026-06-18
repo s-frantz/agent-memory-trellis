@@ -119,6 +119,7 @@ Do not act on your conversational memory alone. Every correction must be verifie
 **What to look for:**
 
 - **Code vs. docs** - Do the docs reflect what the code actually does?
+- **Decision-log drift** (if the repo keeps a decision log) - When this session resolved or implemented a decision, reconcile it: record a new one as `proposed`, and promote a `proposed` record to `accepted` once the session's code reflects it. This per-session check is what keeps a decision that landed in code from silently missing its record; the full sweep is `doc-audit`'s job.
 - **DRY violations** - Same fact stated in multiple places that could drift apart. Flag it.
 - **Navigability** - Fundamental docs that have become unwieldy or hard to follow. For medium repos (~100K LOC or less), navigational docs work best around 300 lines; append-only logs (decisions, changelogs) can grow without limit. Judge by how the doc is *used*.
 - **Coverage gaps** - Significant code with no documentation anywhere. Raise specifically, not generically. Before suggesting a new doc, ask: who maintains it? How does it stay accurate?
