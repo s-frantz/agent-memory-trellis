@@ -50,7 +50,7 @@ docs/
 | `AGENTS.md` | High-level guidelines the model always uses: development flow, coding style, when to run/update tests, doc-maintenance duties | Navigational — keep tight |
 | `docs/INDEX.md` | Table of contents for navigating all docs | Navigational — one line per doc |
 | `docs/ARCHITECTURE.md` | How things actually fit together: components, data flow, orchestration. Includes a **FEATURES table of contents** linking feature-specific .md files embedded throughout the project tree | Navigational — condense as the system stabilizes |
-| `docs/DECISIONS.md` | Long doc tracking past work outcomes and major decisions, with dates and rationale | Append-only — length is fine |
+| `docs/DECISIONS.md` | The decision log: past outcomes and major decisions, with dates and rationale. Significant decisions may graduate to full MADR records — see *Decisions* below | Append-only — length is fine |
 | `docs/ROADMAP.md` | Planned future work, roughly sequenced | Living — prune what ships or dies |
 | `docs/PITFALLS.md` | Two-directional trap log: pitfalls the *model* should avoid repeating, AND traps the model has noticed the *human prompter* falling into | Append-only — length is fine |
 | `docs/TESTING.md` | How the model should validate its work; grows alongside the test suite as features are developed | Living |
@@ -63,6 +63,26 @@ Optional library docs, created when the need bites rather than up front:
 | `docs/UBIQUITOUS_LANGUAGE.md` (or `GLOSSARY.md`) | Domain terms accumulate or ambiguity causes a real mistake. Lives in `docs/`, never at root; AGENTS.md points to it as the canonical vocabulary |
 
 Supplementary docs (a COMMANDS.md, feature specs, API references) are welcome — the blueprint is a floor, not a ceiling. Every supplementary doc must appear in INDEX.md, and feature-specific docs embedded in the source tree must appear in ARCHITECTURE.md's FEATURES table.
+
+### Decisions: flat log vs. MADR records
+
+Decisions get two tiers; pick per decision rather than committing the whole repo to one:
+
+| Tier | Use when | Shape |
+|------|----------|-------|
+| **Flat entry** in `DECISIONS.md` | Small, reversible, or low-stakes — most decisions | One dated line: what was decided and why |
+| **Full MADR record** in `docs/decisions/NNNN-title.md` | Architecturally significant, contested, or expensive to reverse | A lean [MADR-minimal](https://adr.github.io/madr/) file: *Context and Problem Statement → Considered Options → Decision Outcome → Consequences*, plus a `status` field |
+
+**One index, never two.** In flat mode, `DECISIONS.md` *is* the log. Once a repo adopts the `docs/decisions/` folder, that folder's own `README.md` (MADR's index convention) becomes canonical and `DECISIONS.md` collapses to a one-line pointer to it — don't maintain two competing logs.
+
+**The in-force invariant.** The shared/main branch's `docs/decisions/` holds only `accepted`, in-force records — never planned-but-unbuilt ones, which read as current state and mislead the next agent. Satisfy it one of two ways:
+
+- **PR-based flow (default):** author the record `status: proposed` in the *same* branch/PR as the implementation; it lands `accepted` when the code does. Decision and code move together (anti-entropy law #2).
+- **Solo / no-PR flow:** keep the proposed decision in its `docs/wip/` PLAN; create the `docs/decisions/` file at `accepted`, when code reflects it.
+
+Either way, a decision that's agreed but not yet built is a *plan*, and plans live in `docs/wip/` — not the decision log. `doc-audit` enforces this (promotes on landing, flags phantoms). The `status` field then earns its keep for the rest of the lifecycle: `accepted → superseded`/`deprecated`.
+
+**Public/private.** When the repo runs a split, the public index lists only public decisions and carries one *plain-text* line noting a private decision log exists — never a markdown link into the private tier (it 404s in a stranger's clone). The private tier (`docs/private/decisions/`) keeps its own index. State this split wherever decision practice is described; `doc-audit` polices the boundary.
 
 ### Ephemeral docs: `docs/wip/`
 
