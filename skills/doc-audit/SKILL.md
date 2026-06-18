@@ -84,7 +84,7 @@ For each authoritative doc, check its claims against the actual codebase. This i
 - Future features written about as if current?
 
 **Decision-record accuracy** (if the repo keeps a `DECISIONS.md` or `docs/decisions/` log)
-- This skill owns the decision-log gate: the live log must hold only **in-force** decisions the code actually reflects.
+- This skill owns the decision-log gate: every record the log presents as **in-force** (its `accepted` entries) must match a decision the code actually reflects.
 - An `accepted` record with no corresponding code is a **phantom** — a planned-but-unbuilt decision that reads as current state and misleads the next agent. Verify against code; if the work landed, this is just stale status to fix; if it never landed, flag for retirement (or demote to a `docs/wip/` plan).
 - A record marked `proposed` that the code now reflects should be **promoted** to `accepted`.
 - A `proposed` record without matching code is expected (an in-flight decision), not a phantom — leave it. Only `accepted` records are held to the code.
