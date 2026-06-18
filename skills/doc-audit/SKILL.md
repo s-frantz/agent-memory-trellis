@@ -1,6 +1,7 @@
 ---
 name: doc-audit
-description: Full documentation audit. Reads all authoritative docs, checks them against the code, and resolves every inconsistency found. Run after major refactors or when docs feel out of date.
+description: Full documentation audit — reads every authoritative doc, checks it against the code, and resolves the inconsistencies found. A comprehensive pass, not a lightweight session check.
+disable-model-invocation: true
 ---
 
 # Doc Audit

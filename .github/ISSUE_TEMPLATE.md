@@ -2,4 +2,4 @@
 
 **What's happening / what's missing:**
 
-**Why it matters (and which command, if any):**
+**Why it matters (and which skill, if any):**

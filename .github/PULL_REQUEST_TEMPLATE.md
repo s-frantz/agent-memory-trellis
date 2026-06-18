@@ -2,6 +2,6 @@
 
 **What & why:**
 
-**Touches a command's scope or the division of labor?** <!-- if yes, say how -->
+**Touches a skill's scope or the division of labor?** <!-- if yes, say how -->
 
-- [ ] README command table + `.claude-plugin/plugin.json` updated if a command changed
+- [ ] README skill table + `.claude-plugin/plugin.json` updated if a skill changed

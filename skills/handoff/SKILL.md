@@ -1,11 +1,12 @@
 ---
 name: handoff
-description: Session continuity. Orients from or writes project-state.md depending on session phase. Run at the start of a session to pick up context, or at the end to save it.
+description: Session continuity — orients from or writes project-state.md depending on session phase: picks up context at the start of a session, saves it at the end.
+disable-model-invocation: true
 ---
 
 # Handoff
 
-Ensures continuity between agents and sessions. Depending on when it is invoked, handoff either **picks up** (orients from existing state) or **saves** (tidies docs and writes a snapshot for the next agent). One command, two modes, detected from context.
+Ensures continuity between agents and sessions. Depending on when it is invoked, handoff either **picks up** (orients from existing state) or **saves** (tidies docs and writes a snapshot for the next agent). One skill, two modes, detected from context.
 
 Over time, consistent handoffs make a repository progressively better documented while preventing bloat, staleness, and duplication.
 
@@ -188,7 +189,7 @@ Scale the report to the session. A clean session gets one or two sentences.
 
 ## Principles
 
-**Unified command.** Pickup and save are the same skill. The agent detects which mode applies. If unclear, ask.
+**Unified skill.** Pickup and save are the same skill. The agent detects which mode applies. If unclear, ask.
 
 **Memory path.** Always from system context. If unavailable, fall back to `docs/wip/project-state.md` with a note to the user. Never fail silently.
 
