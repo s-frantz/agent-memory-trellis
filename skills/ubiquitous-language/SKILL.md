@@ -1,6 +1,6 @@
 ---
 name: ubiquitous-language
-description: Build a canonical domain glossary from the current conversation — resolving ambiguous terminology and pinning down shorthand for complex ideas. Flags conflicting or vague terms and proposes canonical ones; saves to docs/UBIQUITOUS_LANGUAGE.md (repo root if no docs/ folder exists). Use when defining domain terms, hardening vocabulary, building a ubiquitous language, or mentions "domain model" or "DDD".
+description: Builds a canonical domain glossary from the current conversation — resolving ambiguous terminology and pinning down shorthand for complex ideas. Flags conflicting or vague terms, proposes canonical ones, and saves to docs/UBIQUITOUS_LANGUAGE.md (repo root if no docs/ folder).
 disable-model-invocation: true
 ---
 

@@ -1,13 +1,14 @@
 ---
 name: doc-library
-description: Recommends and scaffolds a standard documentation library for a project — README and AGENTS at the root, everything else in docs/. Complements /handoff (continuity) and /doc-audit (verification); this skill owns structure. Run when starting a project, splitting one into its own repo, or when docs exist but have no clear home.
+description: Recommends and scaffolds a standard documentation library — README and AGENTS at the root, everything else under docs/. Owns documentation structure; complements handoff (continuity) and doc-audit (verification).
+disable-model-invocation: true
 ---
 
 # Doc Library
 
 Proposes — and on approval, builds — a standard document library for a project. The premise: **text instructions are the new code.** An agent that simultaneously maintains a well-shaped docs folder works faster, needs less supervision, and makes re-entrant passes (new sessions, new agents, post-compaction recovery) far more reliable.
 
-This skill is a *suggestion to migrate*, not a mandate. It never edits or replaces its companion skills — the suite divides cleanly:
+This skill is a *suggestion to migrate*, not a mandate. It never edits or replaces its companion skills — the kit divides cleanly:
 
 | Skill | Owns |
 |-------|------|
@@ -17,7 +18,7 @@ This skill is a *suggestion to migrate*, not a mandate. It never edits or replac
 | `/grill-me` | **Planning input** — interrogate a plan to resolution; resolved plans land in `docs/wip/` |
 | `/ubiquitous-language` | **Vocabulary** — a canonical domain glossary (the `UBIQUITOUS_LANGUAGE.md` doc below) |
 
-**Standalone use:** each skill in this suite works alone. References to the others are pointers to optional companions — if a companion is not installed, skip those mentions; nothing here depends on them existing.
+**Standalone use:** each skill in this kit works alone. References to the others are pointers to optional companions — if a companion is not installed, skip those mentions; nothing here depends on them existing.
 
 Run when:
 - A project (or subfolder destined to become its own repo) has docs scattered at the root or none at all
