@@ -64,25 +64,23 @@ Optional library docs, created when the need bites rather than up front:
 
 Supplementary docs (a COMMANDS.md, feature specs, API references) are welcome — the blueprint is a floor, not a ceiling. Every supplementary doc must appear in INDEX.md, and feature-specific docs embedded in the source tree must appear in ARCHITECTURE.md's FEATURES table.
 
-### Decisions: flat log vs. MADR records
+### Decisions: privacy, then granularity × lifecycle
 
-Decisions get two tiers; pick per decision rather than committing the whole repo to one:
+Three calls, made per decision. Privacy comes first; the other two form a square.
 
-| Tier | Use when | Shape |
-|------|----------|-------|
-| **Flat entry** in `DECISIONS.md` | Small, reversible, or low-stakes — most decisions | One dated line: what was decided and why |
-| **Full MADR record** in `docs/decisions/NNNN-title.md` | Architecturally significant, contested, or expensive to reverse | A lean [MADR-minimal](https://adr.github.io/madr/) file: *Context and Problem Statement → Considered Options → Decision Outcome → Consequences*, plus a `status` field |
+**Privacy first.** A decision that reveals unreleased strategy or direction belongs in the gitignored private tier (`docs/private/decisions/`, or a `docs/wip/` draft) — never the published log. The public log carries only decisions safe to publish, and notes the private tier in one *plain-text* line, never a markdown link (it 404s in a stranger's clone). The private tier keeps its own index. A periodic audit should police this boundary for leaks.
 
-**One index, never two.** In flat mode, `DECISIONS.md` *is* the log. Once a repo adopts the `docs/decisions/` folder, that folder's own `README.md` (MADR's index convention) becomes canonical and `DECISIONS.md` collapses to a one-line pointer to it — don't maintain two competing logs.
+**The square.** Two independent axes — pick per decision, not once for the whole repo:
 
-**The in-force rule (the constant).** A planned-but-unbuilt decision must never read as current state — that's the phantom that misleads the next agent. So the rule for *reading* the log is fixed: treat only `accepted` records as in-force architecture; `proposed`, `superseded`, and `deprecated` are not constraints on unrelated work, and a legacy entry with no `status` counts as `accepted` (existing logs need no restamping). What varies is *where proposed records live* — two mechanisms keep the reading rule honest, and they trade different costs:
+|  | **Status in place** (default) | **`wip` → log on landing** |
+|--|--|--|
+| **Flat** — a `DECISIONS.md` line | line tagged `(proposed)`, cleared once it lands | line added only once the decision is made *and* built |
+| **MADR** — a `docs/decisions/NNNN-title.md` file | file with `status:` frontmatter, promoted in place | file drafted in `docs/wip/`, moved in at `accepted` |
 
-- **Status in place** (the common default): proposed records sit in `docs/decisions/` carrying `status: proposed`, and readers filter to `accepted`. Promotion is a one-field edit, the whole record and its history stay in one file, and standard ADR tooling sees everything. Cost: filter discipline — one consumer that ignores status resurrects the phantom.
-- **Location separation:** proposed decisions stay in their `docs/wip/` PLAN; a `docs/decisions/` file is created only at `accepted`. The folder is then trustworthy without filtering, and in a public repo with a gitignored `wip/`, proposed decisions (which may reveal unreleased strategy) never enter published history until they land. Cost: a migration step — and if it's forgotten, an in-force decision ends up with *no* record at all, a quieter failure than a stray `proposed` file.
+- **Granularity** (rows): a flat line for small, reversible, low-stakes calls — most of them; a MADR-minimal file ([MADR](https://adr.github.io/madr/): *Context and Problem Statement → Considered Options → Decision Outcome → Consequences*, plus `status`) for the significant or contested ones. One index, never two: in flat mode `DECISIONS.md` is the log; once `docs/decisions/` exists, its `README.md` (MADR's convention) is the index and `DECISIONS.md` becomes a one-line pointer.
+- **Lifecycle** (columns): default to status-in-place — one location, and promotion is a single field edit, so it's the easiest to keep reconciled. Move a proposed record onto the `wip` path when it's sensitive (see *Privacy first*); its only real weakness — a forgotten move leaving a built decision unrecorded — gets caught during ordinary end-of-session cleanup.
 
-**Which to use.** Default to status-in-place: it's the lowest-friction option, it matches existing ADR tooling, and it degrades gracefully — a forgotten promotion just leaves a visible `proposed` record, not a silent hole. Choose location separation when proposed decisions are sensitive and the repo is public, so a gitignored `wip/` keeps them out of published history until they land. Its one real weakness — a forgotten migration leaving an in-force decision with no record — is exactly what `handoff` (per session) and `doc-audit` (full sweep) reconcile, so a repo that runs either keeps that risk in check. The `status` field then carries the rest of the lifecycle: `accepted → superseded`/`deprecated`.
-
-**Public/private.** When the repo runs a split, the public index lists only public decisions and carries one *plain-text* line noting a private decision log exists — never a markdown link into the private tier (it 404s in a stranger's clone). The private tier (`docs/private/decisions/`) keeps its own index. State this split wherever decision practice is described; `doc-audit` polices the boundary.
+**Reading the log (the constant, whichever cell you land in).** Treat only `accepted` records as in-force architecture; `proposed`, `superseded`, and `deprecated` are not constraints on unrelated work. A legacy entry with no `status` counts as `accepted`, so existing logs need no restamping.
 
 ### Ephemeral docs: `docs/wip/`
 
