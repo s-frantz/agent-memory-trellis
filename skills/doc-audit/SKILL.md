@@ -83,6 +83,14 @@ For each authoritative doc, check its claims against the actual codebase. This i
 - Items described as complete that are broken or removed?
 - Future features written about as if current?
 
+**Decision-record accuracy** (if the repo keeps a `DECISIONS.md` or `docs/decisions/` log)
+- This skill owns the decision-log gate: every record the log presents as **in-force** (its `accepted` entries) must match a decision the code actually reflects.
+- An `accepted` record with no corresponding code is a **phantom** — a planned-but-unbuilt decision that reads as current state and misleads the next agent. Verify against code; if the work landed, this is just stale status to fix; if it never landed, flag for retirement (or demote to a `docs/wip/` plan).
+- A record marked `proposed` that the code now reflects should be **promoted** to `accepted`.
+- A `proposed` record without matching code is expected (an in-flight decision), not a phantom — leave it. Only `accepted` records are held to the code.
+- When reading the log as current state, count legacy entries with no `status` as `accepted`.
+- A significant decision visible in the code but absent from the log is a coverage gap — suggest a record.
+
 ---
 
 ## Phase 4: Assess systemic health
@@ -180,6 +188,8 @@ These are the heuristics baked into this skill. Apply judgment — they are guid
 | Same fact in 2+ docs | DRY violation — pick one home, replace copies with pointers |
 | Doc mentions file/endpoint that doesn't exist | Stale — verify and fix |
 | "Planned" item that's clearly shipped | Status stale — update |
+| `accepted` decision record with no matching code | Phantom — fix status if it shipped, else flag for retirement/demote to wip |
+| `proposed` decision record the code now reflects | Promote to `accepted` |
 | Navigational doc >~300 lines and hard to follow | Suggest splitting or linking out |
 | Append-only log (decisions, pitfalls, changelog) | Length is fine — don't flag |
 | Ephemeral/working doc (e.g. in a `docs/wip/` space) | Exempt from bloat rules, but flag if clearly expired (~a month old, or its stated graduation criteria already happened) |

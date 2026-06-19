@@ -50,7 +50,7 @@ docs/
 | `AGENTS.md` | High-level guidelines the model always uses: development flow, coding style, when to run/update tests, doc-maintenance duties | Navigational — keep tight |
 | `docs/INDEX.md` | Table of contents for navigating all docs | Navigational — one line per doc |
 | `docs/ARCHITECTURE.md` | How things actually fit together: components, data flow, orchestration. Includes a **FEATURES table of contents** linking feature-specific .md files embedded throughout the project tree | Navigational — condense as the system stabilizes |
-| `docs/DECISIONS.md` | Long doc tracking past work outcomes and major decisions, with dates and rationale | Append-only — length is fine |
+| `docs/DECISIONS.md` | The decision log: past outcomes and major decisions, with dates and rationale. Significant decisions may graduate to full MADR records — see *Decisions* below | Append-only — length is fine |
 | `docs/ROADMAP.md` | Planned future work, roughly sequenced | Living — prune what ships or dies |
 | `docs/PITFALLS.md` | Two-directional trap log: pitfalls the *model* should avoid repeating, AND traps the model has noticed the *human prompter* falling into | Append-only — length is fine |
 | `docs/TESTING.md` | How the model should validate its work; grows alongside the test suite as features are developed | Living |
@@ -63,6 +63,22 @@ Optional library docs, created when the need bites rather than up front:
 | `docs/UBIQUITOUS_LANGUAGE.md` (or `GLOSSARY.md`) | Domain terms accumulate or ambiguity causes a real mistake. Lives in `docs/`, never at root; AGENTS.md points to it as the canonical vocabulary |
 
 Supplementary docs (a COMMANDS.md, feature specs, API references) are welcome — the blueprint is a floor, not a ceiling. Every supplementary doc must appear in INDEX.md, and feature-specific docs embedded in the source tree must appear in ARCHITECTURE.md's FEATURES table.
+
+### Decisions: one place, one convention
+
+Two repo-level choices form a square, and a lifecycle that's identical in every cell.
+
+**The square.** Pick once for the repo (or a self-contained folder), not per decision:
+
+|  | **Flat** — `DECISIONS.md` | **MADR** — `docs/decisions/` |
+|--|--|--|
+| **Public only** | one running log file | per-decision files, indexed by the folder's own `README.md` |
+| **Public + private split** | public `DECISIONS.md` + a gitignored private log | public `docs/decisions/` + gitignored `docs/private/decisions/`, each with its own index |
+
+- **Granularity — flat *or* MADR, never both.** A flat `DECISIONS.md` is a single running log; fine for a small repo. A `docs/decisions/` folder holds one MADR-minimal file per decision ([MADR](https://adr.github.io/madr/): *Context and Problem Statement → Considered Options → Decision Outcome → Consequences*, plus a `status` field), indexed by the folder's own `README.md` (MADR's convention). If a flat log outgrows itself, migrate it wholesale into MADR and delete `DECISIONS.md` — never run two systems side by side. The index falls out of the choice, so there's never a second one to keep in sync.
+- **Privacy — public-only, or a public/private split.** A decision that reveals unreleased strategy or direction belongs in the gitignored private tier, never the published log. The public index notes the private tier in one *plain-text* line, never a markdown link (it 404s in a stranger's clone). This is the repo-wide split below, applied to decisions — DECISIONS/`docs/decisions/` is one of the doc types it covers.
+
+**The lifecycle is the constant, in every cell.** A decision matures `proposed → accepted → superseded`/`deprecated`. The reading rule never changes: treat only `accepted` records as in-force architecture; `proposed`, `superseded`, and `deprecated` are not constraints on unrelated work, and a legacy entry with no `status` counts as `accepted` (existing logs need no restamping). A sensitive decision stays in the private tier until it can be published; everything else carries its `status` in place and is reconciled — promoted once code reflects it, phantoms flagged — during ordinary end-of-session cleanup.
 
 ### Ephemeral docs: `docs/wip/`
 
