@@ -77,8 +77,14 @@ Three calls, made per decision. Privacy comes first; the other two form a square
 | **Flat** — a `DECISIONS.md` line | line tagged `(proposed)`, cleared once it lands | line added only once the decision is made *and* built |
 | **MADR** — a `docs/decisions/NNNN-title.md` file | file with `status:` frontmatter, promoted in place | file drafted in `docs/wip/`, moved in at `accepted` |
 
-- **Granularity** (rows): a flat line for small, reversible, low-stakes calls — most of them; a MADR-minimal file ([MADR](https://adr.github.io/madr/): *Context and Problem Statement → Considered Options → Decision Outcome → Consequences*, plus `status`) for the significant or contested ones. One index, never two: in flat mode `DECISIONS.md` is the log; once `docs/decisions/` exists, its `README.md` (MADR's convention) is the index and `DECISIONS.md` becomes a one-line pointer.
+- **Granularity** (rows): a flat line for small, reversible, low-stakes calls — most of them; a MADR-minimal file ([MADR](https://adr.github.io/madr/): *Context and Problem Statement → Considered Options → Decision Outcome → Consequences*, plus `status`) for the significant or contested ones.
 - **Lifecycle** (columns): default to status-in-place — one location, and promotion is a single field edit, so it's the easiest to keep reconciled. Move a proposed record onto the `wip` path when it's sensitive (see *Privacy first*); its only real weakness — a forgotten move leaving a built decision unrecorded — gets caught during ordinary end-of-session cleanup.
+
+**One index, and it names its own convention.** Keep a single decision index; which file plays that role depends on the mix, and the index should state which it is up top so the next agent reads the log right instead of guessing:
+
+- *Flat only* — `DECISIONS.md` is the log.
+- *Flat + MADR* (the common mixed case) — `DECISIONS.md` stays the index: small decisions are one-liners in it, significant ones are one-liners that link out to their `docs/decisions/NNNN-title.md` file. That's progressive disclosure in miniature — the log is the entry point, each full record sits one hop deeper.
+- *MADR only* — the folder's own `README.md` (MADR's convention) is the index.
 
 **Reading the log (the constant, whichever cell you land in).** Treat only `accepted` records as in-force architecture; `proposed`, `superseded`, and `deprecated` are not constraints on unrelated work. A legacy entry with no `status` counts as `accepted`, so existing logs need no restamping.
 
