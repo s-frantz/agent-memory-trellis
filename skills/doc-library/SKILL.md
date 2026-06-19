@@ -64,29 +64,21 @@ Optional library docs, created when the need bites rather than up front:
 
 Supplementary docs (a COMMANDS.md, feature specs, API references) are welcome — the blueprint is a floor, not a ceiling. Every supplementary doc must appear in INDEX.md, and feature-specific docs embedded in the source tree must appear in ARCHITECTURE.md's FEATURES table.
 
-### Decisions: privacy, then granularity × lifecycle
+### Decisions: one place, one convention
 
-Three calls, made per decision. Privacy comes first; the other two form a square.
+Two repo-level choices form a square, and a lifecycle that's identical in every cell.
 
-**Privacy first.** A decision that reveals unreleased strategy or direction belongs in the gitignored private tier (`docs/private/decisions/`, or a `docs/wip/` draft) — never the published log. The public log carries only decisions safe to publish, and notes the private tier in one *plain-text* line, never a markdown link (it 404s in a stranger's clone). The private tier keeps its own index. A periodic audit should police this boundary for leaks.
+**The square.** Pick once for the repo (or a self-contained folder), not per decision:
 
-**The square.** Two independent axes — pick per decision, not once for the whole repo:
-
-|  | **Status in place** (default) | **`wip` → log on landing** |
+|  | **Flat** — `DECISIONS.md` | **MADR** — `docs/decisions/` |
 |--|--|--|
-| **Flat** — a `DECISIONS.md` line | line tagged `(proposed)`, cleared once it lands | line added only once the decision is made *and* built |
-| **MADR** — a `docs/decisions/NNNN-title.md` file | file with `status:` frontmatter, promoted in place | file drafted in `docs/wip/`, moved in at `accepted` |
+| **Public only** | one running log file | per-decision files, indexed by the folder's own `README.md` |
+| **Public + private split** | public `DECISIONS.md` + a gitignored private log | public `docs/decisions/` + gitignored `docs/private/decisions/`, each with its own index |
 
-- **Granularity** (rows): a flat line for small, reversible, low-stakes calls — most of them; a MADR-minimal file ([MADR](https://adr.github.io/madr/): *Context and Problem Statement → Considered Options → Decision Outcome → Consequences*, plus `status`) for the significant or contested ones.
-- **Lifecycle** (columns): default to status-in-place — one location, and promotion is a single field edit, so it's the easiest to keep reconciled. Move a proposed record onto the `wip` path when it's sensitive (see *Privacy first*); its only real weakness — a forgotten move leaving a built decision unrecorded — gets caught during ordinary end-of-session cleanup.
+- **Granularity — flat *or* MADR, never both.** A flat `DECISIONS.md` is a single running log; fine for a small repo. A `docs/decisions/` folder holds one MADR-minimal file per decision ([MADR](https://adr.github.io/madr/): *Context and Problem Statement → Considered Options → Decision Outcome → Consequences*, plus a `status` field), indexed by the folder's own `README.md` (MADR's convention). If a flat log outgrows itself, migrate it wholesale into MADR and delete `DECISIONS.md` — never run two systems side by side. The index falls out of the choice, so there's never a second one to keep in sync.
+- **Privacy — public-only, or a public/private split.** A decision that reveals unreleased strategy or direction belongs in the gitignored private tier, never the published log. The public index notes the private tier in one *plain-text* line, never a markdown link (it 404s in a stranger's clone). This is the repo-wide split below, applied to decisions — DECISIONS/`docs/decisions/` is one of the doc types it covers.
 
-**One index, and it names its own convention.** Keep a single decision index; which file plays that role depends on the mix, and the index should state which it is up top so the next agent reads the log right instead of guessing:
-
-- *Flat only* — `DECISIONS.md` is the log.
-- *Flat + MADR* (the common mixed case) — `DECISIONS.md` stays the index: small decisions are one-liners in it, significant ones are one-liners that link out to their `docs/decisions/NNNN-title.md` file. That's progressive disclosure in miniature — the log is the entry point, each full record sits one hop deeper.
-- *MADR only* — the folder's own `README.md` (MADR's convention) is the index.
-
-**Reading the log (the constant, whichever cell you land in).** Treat only `accepted` records as in-force architecture; `proposed`, `superseded`, and `deprecated` are not constraints on unrelated work. A legacy entry with no `status` counts as `accepted`, so existing logs need no restamping.
+**The lifecycle is the constant, in every cell.** A decision matures `proposed → accepted → superseded`/`deprecated`. The reading rule never changes: treat only `accepted` records as in-force architecture; `proposed`, `superseded`, and `deprecated` are not constraints on unrelated work, and a legacy entry with no `status` counts as `accepted` (existing logs need no restamping). A sensitive decision stays in the private tier until it can be published; everything else carries its `status` in place and is reconciled — promoted once code reflects it, phantoms flagged — during ordinary end-of-session cleanup.
 
 ### Ephemeral docs: `docs/wip/`
 
